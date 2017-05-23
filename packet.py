@@ -83,7 +83,7 @@ class Packet:
 		r = ord(ser.read(size=1)[0])
 
 		if Packet.sensor_mask == None:
-			make_mask()
+			Packet.make_mask()
 
 		sensor = r & Packet.sensor_mask
 
