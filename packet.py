@@ -49,11 +49,39 @@ class Packet:
 			
 		for data_type in self.data_sequence:
 			for i in range(0, datatypes.data_lengths[data_type]):
-				data_list.append(ord(
-					ser.read(size=1)[0]
-					))
+				r = ord(ser.read(size=1)[0])
+
+				data_list.append(r)
+				print("\tReceived byte " + str(r))
 
 		return data_list
+
+	def decode_specific(self, lst):
+		current_byte = 0
+
+		ret = []
+
+		for data_type in self.data_sequence:
+			length = datatypes.data_lengths[data_type]
+			ret.append(
+				readdata.read_map[data_type](
+					lst[current_byte:current_byte+length]
+				))
+
+			current_byte = current_byte+length
+
+		# Retorna uma lista com os valores, mais a quantidade de bytes lidos
+		return ret, current_byte
+
+	@staticmethod
+	def decode(lst):
+		ret = [lst[0]]
+
+		sp_ret, sp_bytes = Packet.decode_specific(sensor_map[lst[0]], lst[1:])
+
+		ret.extend(st_ret)
+
+		return ret, sp_bytes+1
 
 	@staticmethod
 	def hash_data(data_list):
@@ -79,8 +107,14 @@ class Packet:
 		Packet.checksum_mask = Packet.checksum_mask << Packet.sensor_bits
 
 	@staticmethod
+	def get_sensor(lst):
+		return lst[0]
+
+	@staticmethod
 	def read_packet(ser):
 		r = ord(ser.read(size=1)[0])
+
+		print("\tReceived byte " + str(r))
 
 		if Packet.sensor_mask == None:
 			Packet.make_masks()

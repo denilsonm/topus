@@ -58,7 +58,6 @@ try:
 
 		# Se o buffer de entrada da XBee não estiver vazio, tentamos ler os dados
 		while xbee_serial.in_waiting > 0:
-			print("Received")
 			status, packet_data = packet.Packet.read_packet(xbee_serial)
 			serial_mutex.release()
 
@@ -92,6 +91,8 @@ try:
 					last_packet_failed = True
 			else:
 				last_packet_failed = False
+
+				print(str(packet.Packet.decode(packet_data) ))
 
 			last_received = datetime.datetime.now()
 			serial_mutex.acquire()
