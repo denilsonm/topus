@@ -7,14 +7,14 @@ import struct
 def readUnsignedInt16(lst):
 	buf=0
 	for i in [1, 0]:
-		buf = buf*256 + ord(lst[i])
+		buf = buf*256 + lst[i]
 
 	return buf
 
 def readUnsignedInt32(lst):
 	buf=0
 	for i in [3, 2, 1, 0]:
-		buf = buf*256 + ord(lst[i])
+		buf = buf*256 + lst[i]
 
 	return buf
 

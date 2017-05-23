@@ -79,7 +79,7 @@ class Packet:
 
 		sp_ret, sp_bytes = Packet.decode_specific(sensor_map[lst[0]], lst[1:])
 
-		ret.extend(st_ret)
+		ret.extend(sp_ret)
 
 		return ret, sp_bytes+1
 
