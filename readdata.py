@@ -41,10 +41,10 @@ def readByte(ser):
 	return ord(r[0])
 
 read_map = [
-	"unsignedInt16" = readUnsignedInt16,
-	"unsignedInt32" = readUnsignedInt32,
-	"int16" = readInt16,
-	"int32" = readInt32,
-	"float32" = readFloat32,
-	"byte" = readByte
+	["unsignedInt16"] = readUnsignedInt16,
+	["unsignedInt32"] = readUnsignedInt32,
+	["int16"] = readInt16,
+	["int32"] = readInt32,
+	["float32"] = readFloat32,
+	["byte"] = readByte
 ]
