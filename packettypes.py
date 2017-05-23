@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 import packet
 
 timer = packet.Packet(sensor_id=0)

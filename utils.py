@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 # Bytes de controle que a XBee no solo pode mandar
 # para o foguete
 CONST_START_TRANSMISSION = 0

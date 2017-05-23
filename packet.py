@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 import readdata
 import datatypes
 import serial

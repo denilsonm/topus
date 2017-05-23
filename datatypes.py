@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 data_types = [
 	"unsignedInt16",
 	"unsignedInt32",
