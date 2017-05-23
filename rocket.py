@@ -39,6 +39,7 @@ while keep_transmitting:
 
 	# A prioridade é ler tudo que há na arduino na máxima velocidade possível
 	while arduino_serial.in_waiting > 0:
+		print("Received")
 		# Lemos os dados da serial do arduino
 		status, packet_data = packet.Packet.read_packet(arduino_serial)
 
@@ -63,6 +64,7 @@ while keep_transmitting:
 
 		while xbee_serial.cts and not arduino_packet_queue.empty():	
 			# Transmitimos pela xbee
+			print("Transmitting")
 			packet.Packet.transmit_packet(xbee_serial, arduino_packet_queue.get())
 
 sdwrite.close()
