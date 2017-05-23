@@ -85,9 +85,9 @@ class Packet:
 		if Packet.sensor_mask == None:
 			Packet.make_masks()
 
-		sensor = r & Packet.sensor_mask
+		sensor_id = r & Packet.sensor_mask
 
-		packet_data = [sensor]
+		packet_data = [sensor_id]
 
 		packet_data.extend(
 			Packet.read_specific_packet(sensor_map[sensor_id], ser)
