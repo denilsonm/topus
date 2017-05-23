@@ -10,8 +10,8 @@ import Queue
 
 keep_transmitting = True
 
-arduino_serial = Serial("/dev/ttyAMA0", 115200)
-xbee_serial = Serial("/dev/ttyUSB0", 230400)
+arduino_serial = serial.Serial("/dev/ttyAMA0", 115200)
+xbee_serial = serial.Serial("/dev/ttyUSB0", 230400)
 	
 # A transmissão de dados pela serial entre a Arduino e a Raspberry
 # Pi provavelmente não vai falhar

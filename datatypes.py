@@ -10,10 +10,10 @@ data_types = [
 ]
 
 data_lengths = {
-	["unsignedInt16"] = 2,
-	["unsignedInt32"] = 4,
-	["int16"] = 2,
-	["int32"] = 4,
-	["float32"] = 4,
-	["byte"] = 1
+	"unsignedInt16": 2,
+	"unsignedInt32": 4,
+	"int16": 2,
+	"int32": 4,
+	"float32": 4,
+	"byte": 1
 }

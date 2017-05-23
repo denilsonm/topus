@@ -7,18 +7,18 @@ CONST_REQUEST_ALIGN = 1
 CONST_END_TRANSMISSION = 2
 
 class FileWrite:
-	def __init__(filename, mode):
+	def __init__(self, filename, mode):
 		self.filename = filename
 
 		self.file = open(filename, mode)
 
-	def write_bytes(byte_list):
+	def write_bytes(self, byte_list):
 		self.file.write(
 			bytearray(
 				byte_list
 			)
 		)
 
-	def close():
+	def close(self):
 		self.file.flush()
 		self.file.close()
