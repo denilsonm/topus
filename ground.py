@@ -109,4 +109,5 @@ try:
 	transmission_ended[0] = True
 	input_thread.join()
 except (KeyboardInterrupt, SystemExit):
+	transmission_ended[0] = True
 	sys.exit()

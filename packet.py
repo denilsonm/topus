@@ -114,4 +114,5 @@ class Packet:
 			packet_data[0] = (packet_hash << Packet.sensor_bits) | packet_data[0]
 
 		for byte in packet_data:
-			ser.write(byte)
+			print("\tTransmitting byte " + str(byte))
+			ser.write(chr(byte))

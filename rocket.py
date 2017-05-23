@@ -54,6 +54,7 @@ while keep_transmitting:
 		# então o solo enviou um byte de controle
 		if xbee_serial.in_waiting > 0:
 			ground_data = ord(xbee_serial.read(size=1)[0])
+			print("Received ctrnl " + str(ground_data))
 
 			if ground_data == utils.CONST_END_TRANSMISSION:
 				keep_transmitting = False
