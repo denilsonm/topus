@@ -66,26 +66,26 @@ class Packet:
 
 	@staticmethod
 	def make_masks():
-		sensor_mask = 0
+		Packet.sensor_mask = 0
 
 		for i in range(0, Packet.sensor_bits):
-			sensor_mask = (sensor_mask << 1) + 1
+			Packet.sensor_mask = (Packet.sensor_mask << 1) + 1
 
-		checksum_mask = 0
+		Packet.checksum_mask = 0
 
 		for i in range(0, 8-Packet.sensor_bits):
-			checksum_mask = (checksum_mask << 1) + 1
+			Packet.checksum_mask = (Packet.checksum_mask << 1) + 1
 
-		checksum_mask = checksum_mask << Packet.sensor_bits
+		Packet.checksum_mask = Packet.checksum_mask << Packet.sensor_bits
 
 	@staticmethod
 	def read_packet(ser):
 		r = ord(ser.read(size=1)[0])
 
-		if sensor_mask == None:
+		if Packet.sensor_mask == None:
 			make_mask()
 
-		sensor = r & sensor_mask
+		sensor = r & Packet.sensor_mask
 
 		packet_data = [sensor]
 
@@ -93,15 +93,15 @@ class Packet:
 			Packet.read_specific_packet(sensor_map[sensor_id], ser)
 			)
 
-		packet_count = packet_count + 1
+		Packet.packet_count = Packet.packet_count + 1
 		
-		if check_input:
+		if Packet.check_input:
 			packet_hash = Packet.hash_data(packet_data)
-			original_hash = (r & checksum_mask) >> Packet.sensor_bits
+			original_hash = (r & Packet.checksum_mask) >> Packet.sensor_bits
 
 			if packet_hash != original_hash:
 				print("Falha no pacote #" + str(packet_count))
-				failure_count = failure_count + 1
+				Packet.failure_count = Packet.failure_count + 1
 
 				return False, []
 
@@ -109,7 +109,7 @@ class Packet:
 
 	@staticmethod
 	def transmit_packet(ser, packet_data):
-		if hash_output:
+		if Packet.hash_output:
 			packet_hash = Packet.hash_data(packet_data)
 			packet_data[0] = (packet_hash << Packet.sensor_bits) | packet_data[0]
 
