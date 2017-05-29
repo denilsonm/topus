@@ -33,13 +33,25 @@ class Packet:
 		sensor_map[sensor_id] = self
 
 		self.data_sequence = []
-		
+		self.packet_bytes = None
 
 	def add_field(self, data_type):
 		if data_type not in datatypes.data_types:
 			raise ValueError("data_type invalido: " + str(data_type) + " do tipo " + str(type(data_type)))
 
 		self.data_sequence.append(data_type)
+
+	def get_length(self):
+		byte_count = 0
+
+		if self.packet_bytes != None:
+			return self.packet_bytes
+
+		for data_type in self.data_sequence:
+			byte_count += datatypes.data_length[data_type]
+
+		self.packet_bytes = byte_count
+		return byte_count
 		
 	def read_specific_packet(self, ser):
 		if not type(ser) == serial.Serial:
