@@ -17,8 +17,9 @@ write_to_sd = Queue.Queue()
 
 def writeThread(write_to_sd):
 	filewrite = utils.FileWrite("rocketdata.bin", "wb")
+	keep_writing = True
 
-	while True:
+	while keep_writing:
 		while write_to_sd.empty():
 			time.sleep(1)
 
@@ -26,7 +27,7 @@ def writeThread(write_to_sd):
 			packet = write_to_sd.get()
 
 			if type(packet) != list:
-				break
+				keep_writing = False
 			else:
 				filewrite.write_bytes(packet)
 
@@ -81,7 +82,7 @@ while keep_transmitting:
 		# então o solo enviou um byte de controle
 		if xbee_serial.in_waiting > 0:
 			ground_data = ord(xbee_serial.read(size=1)[0])
-			print("Received from ground: " + str(ground_data))
+			#print("Received from ground: " + str(ground_data))
 
 			if ground_data == utils.CONST_END_TRANSMISSION:
 				keep_transmitting = False
@@ -91,6 +92,7 @@ while keep_transmitting:
 			print("Transmitting")
 			xbee_serial.write(chr(arduino_packet_queue.get()))
 
+write_to_sd.put("end")
 write_thread.join()
 
 
