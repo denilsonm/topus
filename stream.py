@@ -24,7 +24,7 @@ class Stream:
 
 	def read_serial(self):
 		while self.serial.in_waiting > 0:
-			d = ord(ser.read(size=1)[0])
+			d = ord(self.serial.read(size=1)[0])
 			self.data.append(d)
 
 	@staticmethod
@@ -93,5 +93,5 @@ class Stream:
 
 		packet_hash = Stream.hash_data(packet_data) & ((1<<8-Stream.sensor_bits)-1)
 		packet_hash = packet_hash << Stream.sensor_bits
-		
+
 		packet_data[0] = packet_data[0] | packet_hash

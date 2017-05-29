@@ -31,7 +31,6 @@ shared_data = {
 }
 
 def writeToDisk(shared_data):
-	print("2")
 	file_buffer = shared_data["file_buffer"]
 	filewrite = utils.FileWrite("rocketdata.bin", "wb")
 
@@ -42,13 +41,19 @@ def writeToDisk(shared_data):
 	filewrite.close()
 
 def readFromXBee(shared_data):
-	print("1")
 	xbee_serial = shared_data["xbee_serial"]
 	xbee_serial_mutex = shared_data["xbee_serial_mutex"]
 	xbee_stream = shared_data["xbee_stream"]
 	file_buffer = shared_data["file_buffer"]
 
 	last_packet = datetime.datetime.now()
+
+	while xbee_serial.in_waiting == 0 and not shared_data["requested_end"]:
+		xbee_serial_mutex.acquire()
+		xbee_serial.write(chr(utils.CONST_START_TRANSMISSION))
+		xbee_serial_mutex.release()
+
+		time.sleep(0.01)
 
 	while not shared_data["transmission_ended"]:
 		xbee_serial_mutex.acquire()
