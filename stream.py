@@ -25,17 +25,20 @@ class Stream:
 	def read_serial(self):
 		while self.serial.in_waiting > 0:
 			d = ord(self.serial.read(size=1)[0])
-			print("Byte " + str(d))
 			self.data.append(d)
 
 	@staticmethod
 	def hash_data(data_list):
-		buff = 0
+		modval = 2**(8-Stream.sensor_bits)
+
+		s0 = 0
+		s1 = 0
 
 		for byte in data_list:
-			buff=buff*127 + byte
+			s0 = (s0 + byte) % modval
+			s1 = (s1 + s0) % modval
 
-		return buff & ((1<<8-Stream.sensor_bits)-1)
+		return s1 & ((1<<8-Stream.sensor_bits)-1)
 
 	def retrieve_packet(self):
 		if len(self.data) == 0:
@@ -57,8 +60,6 @@ class Stream:
 
 		if self.check_hash:
 			hash_generated = Stream.hash_data([sensor_type] + self.data[1:(packet_length+1)])
-
-			print("Expected hash: " + str(hash_generated))
 
 			if hash_generated != hash_expected:
 				return Stream.CONST_INVALID_HASH, []
