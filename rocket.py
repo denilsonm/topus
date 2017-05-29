@@ -71,7 +71,7 @@ while keep_transmitting:
 		for new_packet in new_packets:
 			write_to_sd.put(new_packet)
 
-			Stream.prepare_for_transmission(new_packet)
+			Stream.prepare_for_transmission(new_packet, hash_data=True)
 
 			for packet_byte in new_packet:
 				arduino_packet_queue.put(packet_byte)

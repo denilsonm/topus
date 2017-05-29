@@ -16,7 +16,6 @@ import Queue
 CONST_SOFT_TRANSMISSION_TIMEOUT = 5
 CONST_HARD_TRANSMISSION_TIMEOUT = 10
 
-
 xbee_serial = serial.Serial("/dev/ttyUSB0", 230400)
 xbee_serial_mutex = threading.Lock()
 xbee_stream = Stream(ser=xbee_serial, check_hash=True)
@@ -58,10 +57,12 @@ def readFromXBee(shared_data):
 	while not shared_data["transmission_ended"]:
 		xbee_serial_mutex.acquire()
 
+		xbee_stream.read_serial()
 		new_packets = xbee_stream.retrieve_packets()
 
 		if len(new_packets) > 0:
 			for new_packet in new_packets:
+				print("Received " + str(new_packet))
 				file_buffer.put(new_packet)
 
 			last_packet = datetime.datetime.now()
@@ -100,7 +101,7 @@ try:
 		xbee_serial.write(chr(utils.CONST_END_TRANSMISSION))
 		xbee_serial_mutex.release()
 
-		time.sleep(1)
+		time.sleep(0.2)
 
 except (KeyboardInterrupt, SystemExit):
 	print("Parando a transmissão...")

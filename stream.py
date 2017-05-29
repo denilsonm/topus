@@ -25,6 +25,7 @@ class Stream:
 	def read_serial(self):
 		while self.serial.in_waiting > 0:
 			d = ord(self.serial.read(size=1)[0])
+			print("Byte " + str(d))
 			self.data.append(d)
 
 	@staticmethod
@@ -34,7 +35,7 @@ class Stream:
 		for byte in data_list:
 			buff=buff*127 + byte
 
-		return buff
+		return buff & ((1<<8-Stream.sensor_bits)-1)
 
 	def retrieve_packet(self):
 		if len(self.data) == 0:
@@ -51,15 +52,18 @@ class Stream:
 
 		# Um byte extra para o header
 		if len(self.data) < 1 + packet_length:
+			# print(str(len(self.data)) + " / " + str(1+packet_length))
 			return Stream.CONST_NOT_ENOUGH_BYTES, []
 
 		if self.check_hash:
 			hash_generated = Stream.hash_data([sensor_type] + self.data[1:(packet_length+1)])
 
-			if hash_generated != hash_expected:
-				return Stream.CONST_INVALID_HASH
+			print("Expected hash: " + str(hash_generated))
 
-		packet_data = self.data[1:(packet_length+1)]
+			if hash_generated != hash_expected:
+				return Stream.CONST_INVALID_HASH, []
+
+		packet_data = self.data[0:(packet_length+1)]
 		packet_data[0] = sensor_type
 
 		return Stream.CONST_SUCCESS, packet_data
@@ -91,7 +95,6 @@ class Stream:
 		if not hash_data:
 			return packet_data
 
-		packet_hash = Stream.hash_data(packet_data) & ((1<<8-Stream.sensor_bits)-1)
-		packet_hash = packet_hash << Stream.sensor_bits
+		packet_hash = Stream.hash_data(packet_data) << Stream.sensor_bits
 
 		packet_data[0] = packet_data[0] | packet_hash
