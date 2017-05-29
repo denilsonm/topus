@@ -48,7 +48,7 @@ class Packet:
 			return self.packet_bytes
 
 		for data_type in self.data_sequence:
-			byte_count += datatypes.data_length[data_type]
+			byte_count += datatypes.data_lengths[data_type]
 
 		self.packet_bytes = byte_count
 		return byte_count
