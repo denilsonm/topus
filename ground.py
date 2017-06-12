@@ -31,7 +31,7 @@ shared_data = {
 
 def writeToDisk(shared_data):
 	file_buffer = shared_data["file_buffer"]
-	filewrite = utils.FileWrite("rocketdata.bin", "wb")
+	filewrite = utils.FileWrite(utils.availableName(), "wb")
 
 	while not (file_buffer.empty() and shared_data["transmission_ended"]):
 		while not file_buffer.empty():

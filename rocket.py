@@ -16,7 +16,7 @@ import time
 write_to_sd = Queue.Queue()
 
 def writeThread(write_to_sd):
-	filewrite = utils.FileWrite("rocketdata.bin", "wb")
+	filewrite = utils.FileWrite(utils.availableName(), "wb")
 	keep_writing = True
 
 	while keep_writing:

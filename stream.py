@@ -45,7 +45,11 @@ class Stream:
 			return Stream.CONST_NOT_ENOUGH_BYTES, []
 
 		hash_expected = self.data[0] >> Stream.sensor_bits
-		sensor_type = self.data[0] & ((1<<Stream.sensor_bits)-1)
+
+		if self.check_hash:
+			sensor_type = self.data[0] & ((1<<Stream.sensor_bits)-1)
+		else:
+			sensor_type = self.data[0]
 
 		if not sensor_type in packet.sensor_map:
 			return Stream.CONST_INVALID_SENSOR, []
@@ -78,11 +82,14 @@ class Stream:
 			if retrieve_return == Stream.CONST_NOT_ENOUGH_BYTES:
 				break
 			elif retrieve_return == Stream.CONST_INVALID_HASH:
+				print("A")
 				self.data.pop(0)
 			elif retrieve_return == Stream.CONST_INVALID_SENSOR:
+				print("B")
 				# Nunca deveria acontecer mas... vai que né
 				self.data.pop(0)
 			else:
+				print("C, sensor " + str(packet_data[0]))
 				# Sucesso
 				collected_packets.append(packet_data)
 				self.data = self.data[
